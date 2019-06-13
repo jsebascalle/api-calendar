@@ -1,0 +1,29 @@
+{
+  "name": "api-calendar",
+  "version": "1.0.0",
+  "description": "Consumiendo API DE Google Calendar",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsebascalle/api-calendar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jsebascalle/api-calendar/issues"
+  },
+  "homepage": "https://github.com/jsebascalle/api-calendar#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-session": "^1.3.3",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pug": "^2.0.3",
+    "restler": "^3.4.0"
+  }
+}
