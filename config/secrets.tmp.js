@@ -1,8 +1,8 @@
 module.exports = {
-  googleStrategy : {
+  google : {
     consumerKey: '',
     consumerSecret:'',
-    callbackURL: ''
+    callbackURL: "http://localhost:3000/auth/google/callback",
+    ApiKey : ""
   },
-  jwtSecret: ""
 };
