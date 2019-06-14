@@ -1,8 +1,17 @@
 html
-	head
-		title= title
-		link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T", crossorigin="anonymous")
-	body
-		h1 Home
-		form.form-inline(action="/logout" method="POST")
-			input(type="submit" value="cerrar sesión de google" class="btn btn-success")
+    head
+        title= title
+        link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T", crossorigin="anonymous")
+    body
+        div.container
+            h1 Home
+            form.form-inline(action="/logout" method="POST")
+                input(type="submit" value="cerrar sesión de google" class="btn btn-success")
+        div.container
+            h3 crear evento
+            form(action="/events" method="POST")
+                input(type="text" name="summary" class="form-control" placeholder="Nombre del vento")
+                textarea(name="description" class="form-control" placeholder="Descripcion")
+                input(type="datetime-local" name="start" placeholder="fecha inicio" class="form-control")
+                input(type="datetime-local" name="end" placeholder="fecha final" class="form-control")
+                input(type="submit" value="Enviar" class="btn btn-success")

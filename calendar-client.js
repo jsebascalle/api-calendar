@@ -3,20 +3,21 @@ const secrets = require("./config/secrets");
 
 class Event{
 	constructor(accessToken,calendarID = 'primary'){
-		this.destinationURL = "https://www.googleapis.com/calendar/v3/calendars/"+calendarID+'/events';
+		this.destinationURL = "https://www.googleapis.com/calendar/v3/calendars/"+calendarID;
 		this.accessToken =accessToken;
 		this.calendarID = calendarID;
 	}
 
+	create(data,callback){
+		var data = JSON.stringify(data);
+
+		var options = Object.assign({},this.defaultInfo(),data);
+
+		rest.post(this.destinationURL+"/events",options).on('complete', callback);
+	}
+
 	all(callback){
-		rest.get(this.destinationURL,this.defaultInfo()).on('complete', function(result) {
-		  if (result instanceof Error) {
-		    console.log('Error:', result.message);
-		    this.retry(5000); // try again after 5 sec
-		  } else {
-		    return result;
-		  }
-		});
+		rest.get(this.destinationURL+"/events",this.defaultInfo()).on('complete', callback);
 	}
 
 	defaultInfo(){
@@ -24,8 +25,7 @@ class Event{
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization" : "Bearer "+this.accessToken
-			},
-			timeout: 10000
+			}
 		}
 	}
 }

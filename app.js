@@ -1,8 +1,10 @@
-var express = require('express');
-var passport = require('passport');
-var Event = require('./calendar-client');
-var cookieSession = require('cookie-session');
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const express = require('express');
+const passport = require('passport');
+const moment = require('moment');
+const bodyParser = require("body-parser");
+const cookieSession = require('cookie-session');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const Event = require('./calendar-client');
 var secrets = require("./config/secrets");
 
 var app = express();
@@ -15,6 +17,8 @@ app.use(cookieSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended :true}));
 
 
 // Use the GoogleStrategy within Passport.
@@ -51,13 +55,13 @@ app.get('/', function (req, res) {
 
   if (isLogginIn(req)) {
 
-  	var event = new Event(req.session.passport.user.accessToken);
+  	/*var event = new Event(req.session.passport.user.accessToken);
 
   	event.all(function(data){
   		res.send(data);
-  	});
+  	});*/
 
-  	//res.render('home');
+  	res.render('home');
   }else{
   	res.render('index');
   }
@@ -69,12 +73,37 @@ app.post('/login',
   passport.authenticate('google', { scope: ['profile','https://www.googleapis.com/auth/calendar','https://www.googleapis.com/auth/userinfo.email'] })
 );
 
+
 app.get('/logout',function(req,res){
   if (isLogginIn(req)) {
   	req.session.passport.user = null;
   }
 
   res.redirect('/');
+});
+
+
+app.post('/events',function(req,res){
+  
+  	var eventsOptions = {
+  		"summary" : req.body.summary,
+  		"description" : req.body.decription,
+  		"start" : {
+  			"dateTime" : moment(req.body.start).toISOString(),
+  			'timeZone':'America/Bogota'
+  		},
+  		"end" : {
+  			"dateTime" : moment(req.body.end).toISOString(),
+  			'timeZone':'America/Bogota'
+  		},
+  	}
+
+  	var event = new Event(req.session.passport.user.accessToken);
+
+  	event.create(eventsOptions, function(event){
+  		console.log(event);
+  		res.render('show',event);
+  	})
 });
 
 app.get('/auth/google/callback', passport.authenticate('google',{failureRedirect:'/'}),function(req,res){
